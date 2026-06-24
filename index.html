@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<title>Aces District — Romeoville, IL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#161513;
+    --stone:#8b8378;
+    --stone-dark:#3a3733;
+    --cream:#f3efe6;
+    --gold:#c9a13b;
+    --gold-bright:#e2bd5a;
+    --line:rgba(243,239,230,0.16);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ink);
+    color:var(--cream);
+    font-family:'Inter',sans-serif;
+    font-weight:400;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .display{font-family:'Oswald',sans-serif;text-transform:uppercase;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+  a{color:inherit;text-decoration:none;}
+  img{display:block;max-width:100%;}
+
+  /* ---------- chip / suit marker ---------- */
+  .chip-mark{
+    width:46px;height:46px;border-radius:50%;
+    border:2px solid var(--gold);
+    display:flex;align-items:center;justify-content:center;
+    font-size:18px;color:var(--gold);flex-shrink:0;
+    position:relative;
+  }
+  .chip-mark::before{
+    content:"";position:absolute;inset:5px;border:1px dashed rgba(201,161,59,0.5);border-radius:50%;
+  }
+
+  /* ---------- header ---------- */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:22px 5%;
+    background:linear-gradient(to bottom, rgba(22,21,19,0.92), rgba(22,21,19,0));
+    transition:background .3s ease, padding .3s ease;
+  }
+  header.scrolled{
+    background:rgba(22,21,19,0.96);
+    padding:14px 5%;
+    border-bottom:1px solid var(--line);
+  }
+  .logo{
+    display:flex;align-items:center;gap:10px;
+    font-family:'Oswald',sans-serif;font-weight:600;letter-spacing:0.06em;font-size:20px;
+  }
+  .logo .a-mark{color:var(--gold);font-size:24px;}
+  nav{display:flex;gap:34px;align-items:center;}
+  nav a{
+    font-size:13px;letter-spacing:0.08em;text-transform:uppercase;
+    color:var(--cream);opacity:0.78;transition:opacity .2s;
+  }
+  nav a:hover{opacity:1;}
+  .nav-cta{
+    border:1px solid var(--gold);color:var(--gold)!important;opacity:1!important;
+    padding:9px 18px;border-radius:2px;font-size:12px;letter-spacing:0.1em;
+    transition:background .2s,color .2s;
+  }
+  .nav-cta:hover{background:var(--gold);color:var(--ink)!important;}
+  .nav-toggle{display:none;background:none;border:0;color:var(--cream);font-size:24px;cursor:pointer;}
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;min-height:100vh;display:flex;align-items:flex-end;
+    overflow:hidden;
+  }
+  .hero::after{
+    content:"";position:absolute;inset:0;
+    background:
+      linear-gradient(to top, rgba(22,21,19,0.97) 0%, rgba(22,21,19,0.55) 45%, rgba(22,21,19,0.35) 70%, rgba(22,21,19,0.65) 100%);
+  }
+  .hero img{
+    position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+    filter:saturate(0.85) contrast(1.05);
+  }
+  .hero-content{
+    position:relative;z-index:2;width:100%;
+    padding:0 5% 70px;
+    display:flex;justify-content:space-between;align-items:flex-end;gap:40px;
+  }
+  .hero-eyebrow{
+    display:flex;align-items:center;gap:12px;margin-bottom:22px;
+    font-size:13px;letter-spacing:0.18em;color:var(--gold-bright);
+  }
+  .hero-eyebrow .dot{width:7px;height:7px;background:var(--gold-bright);border-radius:50%;animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.35;}}
+  .hero h1{
+    font-size:clamp(58px,11vw,148px);line-height:0.92;letter-spacing:0.01em;
+    font-weight:600;color:var(--cream);
+  }
+  .hero h1 span{color:var(--gold);}
+  .hero-sub{
+    font-size:15px;letter-spacing:0.04em;color:var(--cream);opacity:0.8;
+    margin-top:20px;max-width:420px;
+  }
+  .hero-address{
+    font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.04em;
+    color:var(--cream);opacity:0.65;margin-top:18px;line-height:1.8;
+  }
+  .hero-right{display:flex;flex-direction:column;align-items:flex-end;gap:18px;}
+  .btn-primary{
+    background:var(--gold);color:var(--ink);padding:16px 30px;
+    font-family:'Oswald',sans-serif;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;
+    border-radius:2px;display:inline-block;transition:background .2s,transform .2s;
+    white-space:nowrap;
+  }
+  .btn-primary:hover{background:var(--gold-bright);transform:translateY(-1px);}
+  .corner-index{
+    font-family:'Oswald',sans-serif;font-weight:600;color:var(--gold);
+    text-align:right;line-height:1;
+  }
+  .corner-index .rank{font-size:30px;display:block;}
+  .corner-index .suit{font-size:18px;}
+  .scroll-cue{
+    position:absolute;bottom:26px;left:5%;z-index:2;
+    font-size:11px;letter-spacing:0.15em;color:var(--cream);opacity:0.55;
+    display:flex;align-items:center;gap:10px;
+  }
+  .scroll-cue::after{content:"";width:1px;height:30px;background:var(--cream);opacity:0.4;animation:dropline 1.8s infinite;}
+  @keyframes dropline{0%{transform:scaleY(0);transform-origin:top;}50%{transform:scaleY(1);transform-origin:top;}51%{transform:scaleY(1);transform-origin:bottom;}100%{transform:scaleY(0);transform-origin:bottom;}}
+
+  /* ---------- section shell ---------- */
+  section{padding:120px 5%;position:relative;}
+  .section-head{
+    display:flex;align-items:center;gap:20px;margin-bottom:56px;
+  }
+  .section-head .label{
+    font-size:13px;letter-spacing:0.16em;color:var(--gold);
+  }
+  .section-head h2{
+    font-family:'Oswald',sans-serif;font-size:clamp(30px,4vw,46px);
+    text-transform:uppercase;font-weight:600;letter-spacing:0.01em;
+  }
+  .rule{height:1px;background:var(--line);flex:1;}
+
+  /* ---------- stat strip ---------- */
+  .stat-strip{
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    display:grid;grid-template-columns:repeat(4,1fr);
+    padding:0 5%;background:#1b1916;
+  }
+  .stat{
+    padding:46px 28px;border-right:1px solid var(--line);
+  }
+  .stat:last-child{border-right:none;}
+  .stat .num{font-family:'Oswald',sans-serif;font-size:clamp(28px,3.4vw,42px);color:var(--gold);font-weight:600;}
+  .stat .lbl{font-size:12px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.65;margin-top:8px;}
+
+  /* ---------- vision / overview ---------- */
+  .overview{display:grid;grid-template-columns:1.1fr 0.9fr;gap:70px;align-items:start;}
+  .overview p{font-size:17px;opacity:0.82;max-width:560px;margin-bottom:18px;}
+  .overview .accent-word{color:var(--gold);}
+  .deal-card{
+    background:#1e1c19;border:1px solid var(--line);padding:34px;border-radius:2px;
+  }
+  .deal-card .row{display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--line);font-size:14px;}
+  .deal-card .row:last-child{border-bottom:none;}
+  .deal-card .row span:first-child{opacity:0.6;letter-spacing:0.04em;}
+  .deal-card .row span:last-child{font-family:'JetBrains Mono',monospace;color:var(--gold-bright);}
+  .deal-card .status-badge{
+    display:inline-flex;align-items:center;gap:8px;background:rgba(201,161,59,0.12);
+    border:1px solid var(--gold);color:var(--gold);padding:8px 16px;border-radius:2px;
+    font-size:12px;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:22px;
+  }
+
+  /* ---------- site plan ---------- */
+  .site-wrap{display:grid;grid-template-columns:1.2fr 0.8fr;gap:60px;align-items:center;}
+  .site-img{border:1px solid var(--line);position:relative;}
+  .site-img img{width:100%;}
+  .tract-list{display:flex;flex-direction:column;gap:0;}
+  .tract{padding:24px 0;border-bottom:1px solid var(--line);}
+  .tract:first-child{padding-top:0;}
+  .tract .tname{font-family:'Oswald',sans-serif;letter-spacing:0.08em;font-size:15px;color:var(--gold-bright);margin-bottom:10px;}
+  .tract .tspecs{display:flex;gap:26px;font-family:'JetBrains Mono',monospace;font-size:13px;opacity:0.78;}
+
+  /* ---------- tenant feature cards ---------- */
+  .tenant-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:28px;}
+  .feature-card{
+    border:1px solid var(--line);background:#1b1916;padding:40px;
+    border-radius:2px;position:relative;overflow:hidden;
+  }
+  .feature-card.glow{border-color:rgba(201,161,59,0.4);}
+  .feature-card .ftag{
+    font-size:12px;letter-spacing:0.14em;color:var(--gold);text-transform:uppercase;margin-bottom:16px;display:block;
+  }
+  .feature-card h3{font-family:'Oswald',sans-serif;font-size:28px;text-transform:uppercase;margin-bottom:14px;}
+  .feature-card p{opacity:0.75;font-size:15px;max-width:420px;}
+  .suit-bg{
+    position:absolute;right:-10px;bottom:-30px;font-size:160px;color:rgba(201,161,59,0.07);
+    line-height:1;pointer-events:none;
+  }
+  .mix-row{display:flex;gap:10px;margin-top:24px;flex-wrap:wrap;}
+  .mix-chip{
+    border:1px solid var(--line);padding:8px 16px;border-radius:2px;font-size:12px;
+    letter-spacing:0.06em;text-transform:uppercase;opacity:0.85;
+  }
+  .ev-stations{display:flex;gap:8px;margin-top:24px;}
+  .ev-bolt{
+    width:34px;height:34px;border:1px solid var(--gold);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:15px;
+  }
+
+  /* ---------- rendering split ---------- */
+  .render-split{display:grid;grid-template-columns:1fr 1fr;gap:0;align-items:stretch;border:1px solid var(--line);}
+  .render-split img{width:100%;height:100%;object-fit:cover;}
+  .render-text{padding:54px;display:flex;flex-direction:column;justify-content:center;background:#1b1916;}
+  .render-text h3{font-family:'Oswald',sans-serif;font-size:30px;text-transform:uppercase;margin-bottom:16px;}
+  .render-text p{opacity:0.78;font-size:15px;margin-bottom:24px;}
+
+  /* ---------- leasing / contact ---------- */
+  .contact-wrap{display:grid;grid-template-columns:0.85fr 1.15fr;gap:70px;}
+  .leasing-list{display:flex;flex-direction:column;gap:22px;margin-top:28px;}
+  .leasing-list .li{display:flex;gap:16px;align-items:flex-start;}
+  .leasing-list .mk{color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:13px;margin-top:3px;}
+  .leasing-list p{font-size:14px;opacity:0.78;margin:0;}
+  form{display:flex;flex-direction:column;gap:18px;}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  label{font-size:12px;letter-spacing:0.08em;text-transform:uppercase;opacity:0.65;margin-bottom:8px;display:block;}
+  input,textarea{
+    width:100%;background:#1e1c19;border:1px solid var(--line);color:var(--cream);
+    padding:14px 16px;font-family:'Inter',sans-serif;font-size:14px;border-radius:2px;
+    transition:border-color .2s;
+  }
+  input:focus,textarea:focus{outline:none;border-color:var(--gold);}
+  textarea{resize:vertical;min-height:110px;}
+  button[type=submit]{
+    background:var(--gold);color:var(--ink);border:none;padding:16px;
+    font-family:'Oswald',sans-serif;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;
+    cursor:pointer;border-radius:2px;margin-top:6px;transition:background .2s;
+  }
+  button[type=submit]:hover{background:var(--gold-bright);}
+  .form-note{font-size:12px;opacity:0.5;margin-top:4px;}
+
+  /* ---------- map / footer ---------- */
+  .map-frame{border:1px solid var(--line);height:380px;overflow:hidden;margin-top:60px;}
+  .map-frame iframe{width:100%;height:100%;border:0;filter:grayscale(0.3) invert(0.92) contrast(0.9);}
+
+  footer{
+    border-top:1px solid var(--line);padding:54px 5% 36px;
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:30px;
+    font-size:13px;opacity:0.6;
+  }
+  footer .f-col{display:flex;flex-direction:column;gap:8px;}
+  footer .f-col strong{opacity:1;color:var(--cream);font-family:'Oswald',sans-serif;letter-spacing:0.06em;}
+
+  /* ---------- reveal animation ---------- */
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease;}
+  .reveal.in{opacity:1;transform:translateY(0);}
+
+  @media (prefers-reduced-motion: reduce){
+    .reveal{transition:none;opacity:1;transform:none;}
+    .scroll-cue::after,.hero-eyebrow .dot{animation:none;}
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width:980px){
+    .overview,.site-wrap,.tenant-grid,.render-split,.contact-wrap{grid-template-columns:1fr;}
+    .stat-strip{grid-template-columns:repeat(2,1fr);}
+    .stat:nth-child(2){border-right:none;}
+    .hero-content{flex-direction:column;align-items:flex-start;gap:26px;}
+    .hero-right{align-items:flex-start;}
+    .corner-index{text-align:left;}
+  }
+  @media (max-width:760px){
+    nav{position:fixed;top:0;right:0;height:100vh;width:74%;background:#161513;
+      flex-direction:column;justify-content:center;gap:30px;transform:translateX(100%);
+      transition:transform .35s ease;border-left:1px solid var(--line);}
+    nav.open{transform:translateX(0);}
+    .nav-toggle{display:block;}
+    .form-row{grid-template-columns:1fr;}
+    section{padding:90px 6%;}
+    .stat-strip{padding:0 6%;}
+  }
+</style>
+</head>
+<body>
+
+<header id="siteHeader">
+  <div class="logo"><span class="a-mark">♠</span>ACES&nbsp;DISTRICT</div>
+  <nav id="siteNav">
+    <a href="#overview">Overview</a>
+    <a href="#site">The Site</a>
+    <a href="#tenants">Tenants</a>
+    <a href="#leasing">Leasing</a>
+    <a href="#contact" class="nav-cta">Pre‑Leasing</a>
+  </nav>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu">☰</button>
+</header>
+
+<!-- HERO -->
+<section class="hero" style="padding:0;">
+  <img src="assets/rendering.jpg" alt="Aces District retail rendering at dusk">
+  <div class="hero-content">
+    <div>
+      <div class="hero-eyebrow"><span class="dot"></span>PRE‑LEASING NOW OPEN</div>
+      <h1>ACES<br><span>DISTRICT</span></h1>
+      <p class="hero-sub">A new retail hand at the corner of Weber and Normantown — anchored by Aces Dispensary, a steakhouse, cigar lounge, and seven Tesla Supercharging stations.</p>
+      <div class="hero-address">NWQ WEBER RD &amp; NORMANTOWN RD<br>ROMEOVILLE, IL 60446</div>
+    </div>
+    <div class="hero-right">
+      <div class="corner-index"><span class="rank">A</span><span class="suit">♠</span></div>
+      <a href="#contact" class="btn-primary">Contact Us For More Info</a>
+    </div>
+  </div>
+  <div class="scroll-cue">SCROLL</div>
+</section>
+
+<!-- STAT STRIP -->
+<div class="stat-strip">
+  <div class="stat"><div class="num">2</div><div class="lbl">Buildings</div></div>
+  <div class="stat"><div class="num">10,500 SF</div><div class="lbl">Each Building</div></div>
+  <div class="stat"><div class="num">3.55 AC</div><div class="lbl">Total Land Size</div></div>
+  <div class="stat"><div class="num">7</div><div class="lbl">Tesla Charging Stalls</div></div>
+</div>
+
+<!-- OVERVIEW -->
+<section id="overview">
+  <div class="section-head reveal">
+    <span class="corner-index" style="font-size:16px;"><span class="rank" style="font-size:20px;">A</span></span>
+    <h2>The Hand</h2>
+    <div class="rule"></div>
+  </div>
+  <div class="overview">
+    <div class="reveal">
+      <p>Aces District holds a <span class="accent-word">hard corner position</span> at Weber Road and Normantown Road in Romeoville — directly off I‑355, among the busiest retail crossroads in the southwest Chicago suburbs.</p>
+      <p>The development is built around a single idea: give drivers a reason to stop. Aces Dispensary anchors the lineup alongside a steakhouse, cigar lounge, and open retail bays, while seven Tesla Supercharging stalls turn every visit into a charging stop.</p>
+      <p>Two freestanding buildings, <span class="accent-word">10,500 SF each</span>, sit across two tracts totaling 3.55 acres — built for tenants who want visibility, parking, and traffic that's already there.</p>
+    </div>
+    <div class="deal-card reveal">
+      <div class="status-badge"><span class="dot" style="width:6px;height:6px;background:var(--gold);border-radius:50%;"></span>Pre‑Leasing</div>
+      <div class="row"><span>Address</span><span>Weber &amp; Normantown Rd</span></div>
+      <div class="row"><span>Municipality</span><span>Romeoville, IL 60446</span></div>
+      <div class="row"><span>Buildings</span><span>2 × 10,500 SF</span></div>
+      <div class="row"><span>Total Land</span><span>3.55 Acres</span></div>
+      <div class="row"><span>Anchor</span><span>Aces Dispensary</span></div>
+      <div class="row"><span>EV Infrastructure</span><span>7 Tesla Stalls</span></div>
+      <div class="row"><span>Access</span><span>I‑355 / Weber Rd</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- SITE PLAN -->
+<section id="site" style="background:#1b1916;">
+  <div class="section-head reveal">
+    <span class="corner-index" style="font-size:16px;"><span class="rank" style="font-size:20px;">2</span></span>
+    <h2>The Site</h2>
+    <div class="rule"></div>
+  </div>
+  <div class="site-wrap">
+    <div class="site-img reveal">
+      <img src="assets/site-plan.jpg" alt="Aces District site plan showing Phase 1 and Phase 2 buildings, parking, and Tesla charger stations">
+    </div>
+    <div class="reveal">
+      <div class="tract-list">
+        <div class="tract">
+          <div class="tname">TRACT 1 — PHASE 1</div>
+          <div class="tspecs"><span>103,237 SF</span><span>2.37 AC</span><span>10,500 SF Bldg</span></div>
+        </div>
+        <div class="tract">
+          <div class="tname">TRACT 2 — PHASE 2</div>
+          <div class="tspecs"><span>51,278 SF</span><span>1.18 AC</span><span>10,500 SF Bldg</span></div>
+        </div>
+        <div class="tract">
+          <div class="tname">PARKING</div>
+          <div class="tspecs"><span>131 Required</span><span>157 Provided</span></div>
+        </div>
+        <div class="tract" style="border-bottom:none;">
+          <div class="tname">ACCESS</div>
+          <div class="tspecs"><span>Proposed 25' cross access</span><span>New 45' driveway</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TENANTS -->
+<section id="tenants">
+  <div class="section-head reveal">
+    <span class="corner-index" style="font-size:16px;"><span class="rank" style="font-size:20px;">3</span></span>
+    <h2>The Lineup</h2>
+    <div class="rule"></div>
+  </div>
+  <div class="tenant-grid reveal">
+    <div class="feature-card glow">
+      <span class="suit-bg">♠</span>
+      <span class="ftag">Anchor Tenant</span>
+      <h3>Aces Dispensary</h3>
+      <p>The corner anchor and the draw for the entire district — a flagship dispensary with frontage on Weber Road and direct sightlines from I‑355.</p>
+      <div class="mix-row">
+        <div class="mix-chip">Retail</div>
+        <div class="mix-chip">Cigar Lounge</div>
+        <div class="mix-chip">Steakhouse</div>
+      </div>
+    </div>
+    <div class="feature-card">
+      <span class="suit-bg">⚡</span>
+      <span class="ftag">EV Infrastructure</span>
+      <h3>Tesla Charging</h3>
+      <p>Seven dedicated Tesla Supercharging stalls built into Phase 1, drawing EV drivers off the interstate and into the parking field every day of the week.</p>
+      <div class="ev-stations">
+        <div class="ev-bolt">⚡</div><div class="ev-bolt">⚡</div><div class="ev-bolt">⚡</div><div class="ev-bolt">⚡</div><div class="ev-bolt">⚡</div><div class="ev-bolt">⚡</div><div class="ev-bolt">⚡</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RENDERING -->
+<section style="background:#1b1916;">
+  <div class="render-split reveal">
+    <img src="assets/rendering.jpg" alt="Aces District storefront rendering">
+    <div class="render-text">
+      <span class="ftag" style="color:var(--gold);font-size:12px;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:16px;display:block;">Elevation</span>
+      <h3>Built To Stop Traffic</h3>
+      <p>Stone and dark metal facades, oversized signage, and a covered walkway tie the dispensary, steakhouse, cigar lounge, and open retail bays into one continuous storefront — visible from both Weber and Normantown.</p>
+      <a href="#contact" class="btn-primary" style="width:fit-content;">Request Leasing Brochure</a>
+    </div>
+  </div>
+</section>
+
+<!-- LEASING / CONTACT -->
+<section id="leasing">
+  <div class="section-head reveal">
+    <span class="corner-index" style="font-size:16px;"><span class="rank" style="font-size:20px;">4</span></span>
+    <h2>Leasing</h2>
+    <div class="rule"></div>
+  </div>
+  <div class="contact-wrap">
+    <div class="reveal">
+      <p style="opacity:0.85;font-size:16px;">Available space is going fast across both phases. Reach out for site plans, rent rolls, and tenant mix details.</p>
+      <div class="leasing-list">
+        <div class="li"><span class="mk">01</span><p>Two buildings available, 10,500 SF each, divisible by suite.</p></div>
+        <div class="li"><span class="mk">02</span><p>Hard corner signage and pylon visibility on Weber &amp; Normantown.</p></div>
+        <div class="li"><span class="mk">03</span><p>157 parking stalls provided across both tracts.</p></div>
+        <div class="li"><span class="mk">04</span><p>Seven Tesla Supercharging stalls drive daily traffic to Phase 1.</p></div>
+      </div>
+    </div>
+    <div id="contact" class="reveal" style="scroll-margin-top:110px;">
+      <form id="leasingForm" action="https://formspree.io/f/maqgnawr" method="POST">
+        <div class="form-row">
+          <div><label for="fname">First Name</label><input id="fname" name="firstName" type="text" required></div>
+          <div><label for="lname">Last Name</label><input id="lname" name="lastName" type="text" required></div>
+        </div>
+        <div class="form-row">
+          <div><label for="email">Email</label><input id="email" name="email" type="email" required></div>
+          <div><label for="phone">Phone Number</label><input id="phone" name="phone" type="tel"></div>
+        </div>
+        <div>
+          <label for="msg">Message</label>
+          <textarea id="msg" name="message" placeholder="Tell us which suite or square footage you're interested in" required></textarea>
+        </div>
+        <input type="hidden" name="_subject" value="New leasing inquiry — Aces District">
+        <button type="submit">Submit Inquiry</button>
+        <p class="form-note" id="formNote">Submissions go straight to your inbox via Formspree.</p>
+      </form>
+    </div>
+  </div>
+
+  <div class="map-frame reveal">
+    <iframe loading="lazy" src="https://www.google.com/maps?q=Weber+Rd+%26+Normantown+Rd,+Romeoville,+IL+60446&output=embed"></iframe>
+  </div>
+</section>
+
+<footer>
+  <div class="f-col">
+    <strong>Aces District</strong>
+    <span>NWQ Weber Rd &amp; Normantown Rd</span>
+    <span>Romeoville, IL 60446</span>
+  </div>
+  <div class="f-col">
+    <strong>Leasing Inquiries</strong>
+    <span>leasing@acesdistrict.com</span>
+    <span>(630) 555‑0142</span>
+  </div>
+  <div class="f-col">
+    <strong>Status</strong>
+    <span>Pre‑Leasing — Phase 1 &amp; Phase 2</span>
+  </div>
+</footer>
+
+<script>
+  // header background on scroll
+  const header = document.getElementById('siteHeader');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // mobile nav toggle
+  const navToggle = document.getElementById('navToggle');
+  const nav = document.getElementById('siteNav');
+  navToggle.addEventListener('click', () => nav.classList.toggle('open'));
+  nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => nav.classList.remove('open')));
+
+  // reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.15 });
+  reveals.forEach(r => io.observe(r));
+
+  // submit form to Formspree via fetch, show inline confirmation
+  const leasingForm = document.getElementById('leasingForm');
+  const formNote = document.getElementById('formNote');
+  leasingForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const submitBtn = leasingForm.querySelector('button[type=submit]');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+    try {
+      const res = await fetch(leasingForm.action, {
+        method: 'POST',
+        body: new FormData(leasingForm),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        leasingForm.reset();
+        leasingForm.querySelectorAll('input,textarea').forEach(el => el.style.display='none');
+        leasingForm.querySelectorAll('label').forEach(el => el.style.display='none');
+        submitBtn.style.display='none';
+        formNote.textContent = '✓ Thanks — your inquiry has been sent. We\'ll be in touch shortly.';
+        formNote.style.color = 'var(--gold-bright)';
+        formNote.style.fontSize = '14px';
+        formNote.style.opacity = '1';
+      } else {
+        throw new Error('Submission failed');
+      }
+    } catch (err) {
+      formNote.textContent = 'Something went wrong — please email leasing@acesdistrict.com directly.';
+      formNote.style.color = '#e2745a';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit Inquiry';
+    }
+  });
+</script>
+
+</body>
+</html>
